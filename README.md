@@ -1,0 +1,2 @@
+# qna
+thinknetica qna app 
