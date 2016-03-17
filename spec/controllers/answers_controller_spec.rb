@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:answer) { create :answer }
+  let(:answer) { create :answer, question_id: 1 }
   describe "GET #index" do
-    let(:answers) { create_list(:answer, 2) }
-    before { get :index }
+    let(:answers) { create_list(:answer, 2, question_id: 1) }
+    before { get :index, question_id: 1}
     it 'populates an array of all answers' do
       expect(assigns(:answers)).to match_array(answers)
     end
@@ -15,7 +15,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #show" do
-    before { get :show, id: answer }
+    before { get :show, id: answer, question_id: 1 }
     it 'assign the requested answer to @answer' do
       expect(assigns(:answer)).to eq answer
     end
@@ -26,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #new" do
-    before { get :new }
+    before { get :new, question_id: 1 }
     it "assigns a new Question to @answer" do
       expect(assigns(:answer)).to be_a_new(Question)
     end
@@ -38,7 +38,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #edit" do
-    before { get :edit, id: answer }
+    before { get :edit, id: answer, question_id: 1 }
     it 'assign the requested answer to @answer' do
       expect(assigns(:answer)).to eq answer
     end
@@ -51,19 +51,19 @@ RSpec.describe AnswersController, type: :controller do
   describe "POST #create" do
     context "with valid attributes" do
       it "save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:answer) }.to change(Question, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer), question_id: 1 }.to change(Question, :count).by(1)
       end
       it "redirect to show view" do
-        post :create, answer: attributes_for(:answer)
+        post :create, answer: attributes_for(:answer), question_id: 1
         expect(response).to redirect_to answer_path(assigns :answer)
       end
     end
     context "with invalid attributes" do
       it "doesn't save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:invalid_answer) }.to_not change(Question, :count)
+        expect { post :create, answer: attributes_for(:invalid_answer), question_id: 1 }.to_not change(Question, :count)
       end
       it "re-render new view" do
-        post :create, answer: attributes_for(:invalid_answer)
+        post :create, answer: attributes_for(:invalid_answer), question_id: 1
         expect(response).to render_template :new
       end
     end
@@ -72,24 +72,24 @@ RSpec.describe AnswersController, type: :controller do
   describe "PATCH #update" do
     context "with valid attributes" do
       it 'assign the requested answer to @answer' do
-        patch :update, id: answer, answer: attributes_for(:answer)
+        patch :update, id: answer, question_id: 1, answer: attributes_for(:answer)
         expect(assigns(:answer)).to eq answer
       end
 
       it "changes answer attrs" do
-        patch :update, id: answer, answer: { title: 'new title', body: 'new body' }
+        patch :update, id: answer, question_id: 1, answer: { title: 'new title', body: 'new body' }
         answer.reload
         expect(answer.title).to eq 'new title'
         expect(answer.body).to eq 'new body'
       end
 
       it "redirect to the updated answer" do
-        patch :update, id: answer, answer: attributes_for(:answer)
+        patch :update, id: answer, question_id: 1, answer: attributes_for(:answer)
         expect(response).to redirect_to answer
       end
     end
     context "with invalid attributes" do
-      before { patch :update, id: answer, answer: { title: 'new title', body: nil } }
+      before { patch :update, id: answer, question_id: 1, answer: { title: 'new title', body: nil } }
       it "doesn't changes answer attrs" do
         answer.reload
         expect(answer.title).to eq 'MyString'
@@ -104,7 +104,7 @@ RSpec.describe AnswersController, type: :controller do
   describe "DELETE #destroy" do
     before { answer }
     it "delete answer" do
-      expect { delete :destroy, id: answer }.to change(Question, :count).by(-1)
+      expect { delete :destroy, id: answer, question_id: 1 }.to change(Question, :count).by(-1)
     end
     it "redirect to index view" do
       expect(delete :destroy, id: answer).to redirect_to answers_path
