@@ -1,10 +1,16 @@
-= form_for @question do |q|
+= form_for(@question, html: { class: "form-horizontal", role: "form" }) do |f|
+  = render 'common/errors', resource: @question
+
   .form-group
-    = q.label :title
-    = q.text_field :title, placeholder: true, class: 'form-control'
-    
+    = f.label :title, class: "col-sm-2 control-label"
+    .col-sm-10
+      = f.text_field :title, class: "form-control"
+
   .form-group
-    = q.label :body
-    = q.text_area :body, placeholder: true, class: 'form-control', cols: 10, rows: 10
-  
-  = q.submit class: 'btn btn-success'
+    = f.label :body, class: "col-sm-2 control-label"
+    .col-sm-10
+      = f.text_area :body, class: "form-control", rows: 10
+
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit class: "btn btn-primary"
