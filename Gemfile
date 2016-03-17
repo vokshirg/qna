@@ -59,3 +59,4 @@ end
 
 gem 'factory_girl_rails'
 gem 'slim'
+gem 'slim-rails'
