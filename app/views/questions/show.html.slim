@@ -1,0 +1,15 @@
+h3 Заголовок
+h4 = @question.title
+h3 Вопрос
+p = @question.body
+
+hr
+= link_to questions_path, class: 'btn btn-default btn-sm'
+  | Назад
+= link_to edit_question_path, class: 'btn btn-warning btn-sm'
+  | Редактировать
+= link_to new_question_answer_path(@question), class: 'btn btn-success btn-sm'
+  | Ответить
+hr
+h2 Ответы
+= render @question.answers

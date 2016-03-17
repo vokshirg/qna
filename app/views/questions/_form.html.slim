@@ -1,0 +1,10 @@
+= form_for @question do |q|
+  .form-group
+    = q.label :title
+    = q.text_field :title, placeholder: true, class: 'form-control'
+    
+  .form-group
+    = q.label :body
+    = q.text_area :body, placeholder: true, class: 'form-control', cols: 10, rows: 10
+  
+  = q.submit class: 'btn btn-success'
