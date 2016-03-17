@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "redirect to show view" do
         post :create, answer: attributes_for(:answer), question_id: question.id
-        expect(response).to redirect_to question_answers_path(assigns(:answer).question)
+        expect(response).to redirect_to question_path(assigns(:answer).question)
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "redirect to the question of updated answer" do
         patch :update, id: answer, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_answers_path(assigns(:answer).question)
+        expect(response).to redirect_to question_path(assigns(:answer).question)
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it "redirect to index view" do
-      expect(delete :destroy, id: answer, question_id: question.id).to redirect_to question_answers_path(assigns(:answer).question)
+      expect(delete :destroy, id: answer, question_id: question.id).to redirect_to question_path(assigns(:answer).question)
     end
   end
 end

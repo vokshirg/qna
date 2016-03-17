@@ -34,7 +34,7 @@ class AnswersController < ApplicationController
   private
 
   def go_to_question
-    redirect_to question_answers_path(@answer.question)
+    redirect_to question_path(@answer.question)
   end
 
   def answer_params
