@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   # get 'welcome/index'
   resources :questions do
     resources :answers, only: [:new, :create, :edit, :update, :destroy]

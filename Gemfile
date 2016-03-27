@@ -42,6 +42,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
@@ -67,3 +68,6 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 
 gem 'bootstrap-generators'
+
+gem 'devise'
+gem 'devise-bootstrap-views'
