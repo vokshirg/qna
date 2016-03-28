@@ -24,7 +24,7 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, all_on_start: true, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -47,9 +47,9 @@ guard :rspec, cmd: "bundle exec rspec" do
 
   watch(rails.controllers) do |m|
     [
-      rspec.spec.("routing/#{m[1]}_routing"),
+      # rspec.spec.("routing/#{m[1]}_routing"),
       rspec.spec.("controllers/#{m[1]}_controller"),
-      rspec.spec.("acceptance/#{m[1]}")
+      # rspec.spec.("acceptance/#{m[1]}")
     ]
   end
 
@@ -95,12 +95,13 @@ guard 'zeus' do
   rails.controllers = %r{^app/controllers/(.+)_controller\.rb$}
 
   watch(rails.app_files) { |m| rspec.spec.call(m[1]) }
-  watch(rails.views_n_layouts) { |m| rspec.spec.call(m[1]) }
+  watch(rails.views_n_layouts)
+  # watch(rails.views_n_layouts) { |m| rspec.spec.call(m[1]) }
   watch(rails.controllers) do |m|
     [
-      rspec.spec.call("routing/#{m[1]}_routing"),
+      # rspec.spec.call("routing/#{m[1]}_routing"),
       rspec.spec.call("controllers/#{m[1]}_controller"),
-      rspec.spec.call("acceptance/#{m[1]}")
+      # rspec.spec.call("acceptance/#{m[1]}")
     ]
   end
 

@@ -1,0 +1,14 @@
+.row
+  = link_to new_question_path, class: 'btn btn-success '
+    | Задать вопрос
+
+  br
+  br  
+    
+  table.table
+    tr
+      th Заголовок
+      th Тело вопроса
+      th Действия
+         
+    = render @questions  

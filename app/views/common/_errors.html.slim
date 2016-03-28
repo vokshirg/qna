@@ -1,0 +1,11 @@
+- if resource.errors.any?
+  .alert.alert-danger.alert-dismissable role="alert"
+    button.close type="button" data-dismiss="alert"
+      span aria-hidden="true"
+        | &times;
+      span.sr-only
+        | Close
+    h4= "#{pluralize(resource.errors.count,"error")} prohibited this #{resource.class} from being saved:"
+    ul
+      - resource.errors.full_messages.each do |msg|
+        li= msg
