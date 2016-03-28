@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
-  validates :body, :title,  presence: true
+  belongs_to :user
+
+  validates :body, :title, :user_id,  presence: true
 end

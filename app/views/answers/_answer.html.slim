@@ -1,9 +1,9 @@
 hr
 .container
-  p = time_ago_in_words(answer.created_at).to_s + " ago"
+  p = time_ago_in_words(answer.created_at)
     
   p = answer.body
-.form-group
+.form-group.answer
   = link_to question_answer_path(answer.question, answer), method: :delete, class: 'btn btn-danger btn-sm pull-right'
     | Удалить
   = link_to edit_question_answer_path(answer.question, answer), class: 'btn btn-warning btn-sm pull-right'

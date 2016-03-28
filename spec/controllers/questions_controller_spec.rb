@@ -39,25 +39,38 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "GET #edit" do
-    sign_in_user
-    before { get :edit, id: question }
-    it 'assign the requested question to @question' do
-      expect(assigns(:question)).to eq question
+    context "user is owner of question" do
+      before { sign_in(question.user) }
+      before { get :edit, id: question }
+
+      it 'assign the requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it "renders edit view" do
+        expect(response).to render_template :edit
+      end
     end
 
-    it "renders edit view" do
-      expect(response).to render_template :edit
+    context "user is not owner of question" do
+      sign_in_user
+      before { get :edit, id: question }
+
+      it "renders edit view" do
+        expect(response).to redirect_to questions_path
+      end
     end
+
   end
 
   describe "POST #create" do
     sign_in_user
     context "with valid attributes" do
       it "save the new question in the database" do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question, user_id: @user.id) }.to change(Question, :count).by(1)
       end
       it "redirect to show view" do
-        post :create, question: attributes_for(:question)
+        post :create, question: attributes_for(:question, user_id: @user.id)
         expect(response).to redirect_to question_path(assigns :question)
       end
     end
@@ -97,7 +110,7 @@ RSpec.describe QuestionsController, type: :controller do
       it "doesn't changes question attrs" do
         question.reload
         expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.body).to eq 'Text of question body'
       end
 
       it "re-render edit view" do
@@ -106,13 +119,27 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
   describe "DELETE #destroy" do
-    sign_in_user
-    before { question }
-    it "delete question" do
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+
+    context "when user is owner of question" do
+      before { sign_in(question.user) }
+      before { question }
+      it "delete question" do
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+      it "redirect to index view" do
+        expect(delete :destroy, id: question).to redirect_to questions_path
+      end
     end
-    it "redirect to index view" do
-      expect(delete :destroy, id: question).to redirect_to questions_path
+
+    context "when user is not owner of question" do
+      sign_in_user
+      before { question }
+      it "delete question" do
+        expect { delete :destroy, id: question }.to change(Question, :count).by(0)
+      end
+      it "redirect to index view" do
+        expect(delete :destroy, id: question).to redirect_to questions_path
+      end
     end
   end
 end

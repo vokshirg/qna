@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  sign_in_user
   let(:question) { create :question }
-  let(:answer) { create :answer, question_id: question.id }
+  let(:answer) { create :answer, question_id: question.id, user_id: @user.id }
 
   describe "GET #new" do
     before { get :new, question_id: question.id }
@@ -19,12 +20,12 @@ RSpec.describe AnswersController, type: :controller do
   describe "POST #create" do
     context "with valid attributes" do
       it "save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:answer), question_id: question.id }.to change(Answer, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id }.to change(Answer, :count).by(1)
       end
 
       it "redirect to show view" do
-        post :create, answer: attributes_for(:answer), question_id: question.id
-        expect(response).to redirect_to question_path(assigns(:answer).question)
+        post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -67,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "redirect to the question of updated answer" do
         patch :update, id: answer, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(assigns(:answer).question)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -76,7 +77,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "doesn't changes answer attrs" do
         answer.reload
-        expect(answer.body).to eq 'MyText'
+        expect(answer.body).to eq 'Text of answer body'
       end
 
       it "re-render edit view" do
@@ -93,7 +94,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it "redirect to index view" do
-      expect(delete :destroy, id: answer, question_id: question.id).to redirect_to question_path(assigns(:answer).question)
+      expect(delete :destroy, id: answer, question_id: question.id).to redirect_to question_path(answer.question)
     end
   end
 end
