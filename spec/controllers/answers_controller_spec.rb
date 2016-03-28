@@ -20,7 +20,7 @@ RSpec.describe AnswersController, type: :controller do
   describe "POST #create" do
     context "with valid attributes" do
       it "save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id }.to change(Answer, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id }.to change(question.answers, :count).by(1)
       end
 
       it "redirect to show view" do
@@ -90,7 +90,7 @@ RSpec.describe AnswersController, type: :controller do
     before { answer }
 
     it "delete answer" do
-      expect { delete :destroy, id: answer, question_id: question.id }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, id: answer, question_id: question.id }.to change(question.answers, :count).by(-1)
     end
 
     it "redirect to index view" do

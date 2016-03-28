@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :set_question, only: [:new, :create, :edit]
 
   def new
-    @answer = Answer.new()
+    @answer = Answer.new
   end
 
   def edit
@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     if @answer.save
-      redirect_to question_path(@answer.question)
+      redirect_to @answer.question
     else
       render :new
     end
@@ -22,7 +22,7 @@ class AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
-      redirect_to question_path(@answer.question)
+      redirect_to @answer.question
     else
       render :edit
     end
@@ -30,7 +30,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    redirect_to question_path(@answer.question)
+    redirect_to @answer.question
   end
 
   private
@@ -40,7 +40,7 @@ class AnswersController < ApplicationController
     if @answer.user != current_user
       flash[:alert] = 'You are not author of this answer'
       # render :show
-      redirect_to question_path(@answer.question)
+      redirect_to @answer.question
     end
   end
 
