@@ -1,6 +1,5 @@
 = form_for(@question, html: { class: "form-horizontal", role: "form" }) do |f|
   = render 'common/errors', resource: @question
-  = f.hidden_field :user_id, value: current_user.id
 
   .form-group
     = f.label :title, class: "col-sm-2 control-label"

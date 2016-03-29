@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  sign_in_user
   let(:question) { create :question }
-  let(:answer) { create :answer, question_id: question.id, user_id: @user.id }
+  let(:answer) { create :answer, question_id: question.id }
 
   describe "GET #new" do
+    before { sign_in(answer.user) }
     before { get :new, question_id: question.id }
 
     it "assigns a new Answer to @answer" do
@@ -18,13 +18,14 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "POST #create" do
+    sign_in_user
     context "with valid attributes" do
       it "save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id }.to change(question.answers, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer), question_id: question.id }.to change(question.answers, :count).by(1)
       end
 
       it "redirect to show view" do
-        post :create, answer: attributes_for(:answer, user_id: @user.id, question_id: question.id), question_id: question.id
+        post :create, answer: attributes_for(:answer), question_id: question.id
         expect(response).to redirect_to question_path(answer.question)
       end
     end
@@ -42,46 +43,70 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #edit" do
-    before { get :edit, id: answer, question_id: question.id }
+    context "when user is owner of answer" do
+      before { sign_in(answer.user) }
+      before { get :edit, id: answer, question_id: question.id }
 
-    it 'assign the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
+      it 'assign the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it "renders edit view" do
+        expect(response).to render_template :edit
+      end
     end
 
-    it "renders edit view" do
-      expect(response).to render_template :edit
+    context "when user is not owner of answer" do
+      sign_in_user
+      before { get :edit, id: answer, question_id: question.id }
+
+      it "redirect to index view" do
+        expect(get :edit, id: answer).to redirect_to question_path(answer.question)
+      end
     end
   end
 
   describe "PATCH #update" do
-    context "with valid attributes" do
-      it 'assign the requested answer to @answer' do
-        patch :update, id: answer, question_id: question.id, answer: attributes_for(:answer)
-        expect(assigns(:answer)).to eq answer
+    context "when user is owner of answer" do
+      before { sign_in(answer.user) }
+      context "with valid attributes" do
+        it 'assign the requested answer to @answer' do
+          patch :update, id: answer, answer: attributes_for(:answer)
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it "changes answer attrs" do
+          patch :update, id: answer, answer: { body: 'new body' }
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it "redirect to the question of updated answer" do
+          patch :update, id: answer, answer: attributes_for(:answer)
+        end
       end
 
-      it "changes answer attrs" do
-        patch :update, id: answer, question_id: question.id, answer: { body: 'new body' }
-        answer.reload
-        expect(answer.body).to eq 'new body'
-      end
+      context "with invalid attributes" do
+        before { patch :update, id: answer, answer: { body: nil } }
 
-      it "redirect to the question of updated answer" do
-        patch :update, id: answer, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(answer.question)
+        it "doesn't changes answer attrs" do
+          answer.reload
+          expect(answer.body).to eq 'Text of answer body'
+        end
+
+        it "re-render edit view" do
+          expect(response).to render_template :edit
+        end
       end
     end
 
-    context "with invalid attributes" do
-      before { patch :update, id: answer, question_id: question.id, answer: { body: nil } }
+    context "when user is not owner of answer" do
+      sign_in_user
 
-      it "doesn't changes answer attrs" do
+      it "not changes answer attrs" do
+        patch :update, id: answer, answer: { body: 'new body' }
         answer.reload
-        expect(answer.body).to eq 'Text of answer body'
-      end
-
-      it "re-render edit view" do
-        expect(response).to render_template :edit
+        expect(answer.body).to_not eq 'new body'
       end
     end
   end
@@ -89,12 +114,24 @@ RSpec.describe AnswersController, type: :controller do
   describe "DELETE #destroy" do
     before { answer }
 
-    it "delete answer" do
-      expect { delete :destroy, id: answer, question_id: question.id }.to change(question.answers, :count).by(-1)
+    context "when user is owner of answer" do
+      before { sign_in(answer.user) }
+      it "delete answer" do
+        expect { delete :destroy, id: answer }.to change(question.answers, :count).by(-1)
+      end
+      it "redirect to index view" do
+        expect(delete :destroy, id: answer).to redirect_to question_path(answer.question)
+      end
     end
 
-    it "redirect to index view" do
-      expect(delete :destroy, id: answer, question_id: question.id).to redirect_to question_path(answer.question)
+    context "when user is not owner of answer" do
+      sign_in_user
+      it "delete answer" do
+        expect { delete :destroy, id: answer }.to_not change(question.answers, :count)
+      end
+      it "redirect to index view" do
+        expect(delete :destroy, id: answer).to redirect_to question_path(answer.question)
+      end
     end
   end
 end

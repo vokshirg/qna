@@ -7,4 +7,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :validatable
 
+  def is_author?(obj)
+    obj.user_id == self.id
+  end
 end

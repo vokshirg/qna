@@ -67,10 +67,10 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     context "with valid attributes" do
       it "save the new question in the database" do
-        expect { post :create, question: attributes_for(:question, user_id: @user.id) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
       it "redirect to show view" do
-        post :create, question: attributes_for(:question, user_id: @user.id)
+        post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns :question)
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in_user
       before { question }
       it "delete question" do
-        expect { delete :destroy, id: question }.to change(Question, :count).by(0)
+        expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
       it "redirect to index view" do
         expect(delete :destroy, id: question).to redirect_to questions_path

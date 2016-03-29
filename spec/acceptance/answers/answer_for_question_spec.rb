@@ -6,15 +6,15 @@ feature 'Answer for question' do
 
   scenario 'Non-authenticated user tries answer the question' do
     visit question_path(question)
-    click_on 'Ответить'
-
-    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+    within(".question") do
+      expect(page).to_not have_content  I18n.t('common.answer')
+    end
   end
 
   scenario 'Authenticated user tries to answer the question' do
     sign_in(user)
     visit question_path(question)
-    click_on 'Ответить'
+    click_on I18n.t('common.answer')
 
     fill_in 'Body', with: 'My new answers body'
     click_on 'Создать Answer'

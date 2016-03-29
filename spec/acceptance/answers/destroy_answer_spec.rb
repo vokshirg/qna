@@ -2,28 +2,28 @@ require 'rails_helper'
 
 feature 'Destroy answer' do
   given(:user) {create(:user)}
-  given(:user2) {create(:user)}
-  given(:answer) { create :answer, user_id: user.id }
+  given(:answer) { create :answer }
 
   scenario 'Non-authenticated user tries delete any answer' do
     visit question_path(answer.question)
 
-    click_on I18n.t('common.delete')
-    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+    within(".answer") do
+      expect(page).to_not have_content  I18n.t('common.delete')
+    end
   end
 
   scenario 'Authenticated user tries delete non-own answer' do
-    sign_in(user2)
+    sign_in(user)
 
     visit question_path(answer.question)
-    click_on I18n.t('common.delete')
-
-    expect(page).to have_content 'You are not author of this answer'
+    within(".answer") do
+      expect(page).to_not have_content  I18n.t('common.delete')
+    end
     expect(current_path).to eq question_path(answer.question)
   end
 
   scenario 'Authenticated user tries delete own answer' do
-    sign_in(user)
+    sign_in(answer.user)
 
     visit question_path(answer.question)
     click_on I18n.t('common.delete')
