@@ -1,26 +1,29 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_answer, only: [:edit, :update, :destroy]
-  before_action :set_question, only: [:new, :create, :edit]
+  before_action :check_author?, only: [:edit, :update, :destroy]
+  before_action :set_question, only: [:new, :create]
 
   def new
-    @answer = Answer.new()
-  end
-
-  def edit
+    @answer = Answer.new
   end
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     if @answer.save
-      go_to_question
+      redirect_to @answer.question
     else
       render :new
     end
   end
 
+  def edit
+  end
+
   def update
     if @answer.update(answer_params)
-      go_to_question
+      redirect_to @answer.question
     else
       render :edit
     end
@@ -28,13 +31,15 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    go_to_question
+    redirect_to @answer.question
   end
 
   private
 
-  def go_to_question
-    redirect_to question_path(@answer.question)
+  def check_author?
+    unless current_user.is_author?(@answer)
+      redirect_to @answer.question, alert: 'You are not author of this answer'
+    end
   end
 
   def answer_params

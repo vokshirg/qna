@@ -41,6 +41,8 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
@@ -52,6 +54,7 @@ group :development do
   gem 'zeus'
   gem 'rb-readline'
   gem 'terminal-notifier-guard'
+  gem 'letter_opener'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -66,3 +69,7 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 
 gem 'bootstrap-generators'
+
+gem 'devise'
+gem 'devise-bootstrap-views'
+gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'rails-4-x' # For 4.x

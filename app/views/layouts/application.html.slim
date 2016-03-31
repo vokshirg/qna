@@ -30,6 +30,16 @@ html
             li.active
               = link_to questions_path
                 | Вопросы
+            li.right
+              - if current_user
+                = link_to destroy_user_session_path, method: :delete
+                  | Выйти
+              - else
+                = link_to new_user_session_path
+                  | Войти
+                  = current_user
+                
+              
     .container
       - flash.each do |name, msg|
         = content_tag :div, class: "alert alert-#{ name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do
