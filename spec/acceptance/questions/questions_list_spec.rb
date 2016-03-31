@@ -6,9 +6,9 @@ feature 'Show all questions, method index' do
 
     visit questions_path
 
-    expect(page).to have_content "Title #1"
-    expect(page).to have_content "Title #2"
-    expect(page).to have_content "Title #3"
+    3.times do |i|
+      expect(page).to have_content "Title ##{i+1}"
+    end
     expect(page).to have_content "Text of question body"
   end
 end

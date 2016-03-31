@@ -6,7 +6,6 @@ class AnswersController < ApplicationController
 
   def new
     @answer = Answer.new
-    @form_path = [@question, @answer]
   end
 
   def create
@@ -20,7 +19,6 @@ class AnswersController < ApplicationController
   end
 
   def edit
-    @form_path = @answer
   end
 
   def update

@@ -82,7 +82,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it "redirect to the question of updated answer" do
-          patch :update, id: answer, answer: attributes_for(:answer)
+          expect(patch :update, id: answer, answer: attributes_for(:answer)).to redirect_to question_path(answer.question)
         end
       end
 
@@ -108,6 +108,10 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
         expect(answer.body).to_not eq 'new body'
       end
+
+      it "redirect to index view" do
+        expect(patch :update, id: answer, answer: { body: 'new body' }).to redirect_to question_path(answer.question)
+      end
     end
   end
 
@@ -127,7 +131,7 @@ RSpec.describe AnswersController, type: :controller do
     context "when user is not owner of answer" do
       sign_in_user
       it "delete answer" do
-        expect { delete :destroy, id: answer }.to_not change(question.answers, :count)
+        expect { delete :destroy, id: answer }.to_not change(Answer, :count)
       end
       it "redirect to index view" do
         expect(delete :destroy, id: answer).to redirect_to question_path(answer.question)
