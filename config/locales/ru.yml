@@ -4,3 +4,8 @@ ru:
     save: 'Сохранить'
     delete: 'Удалить'
     answer: 'Ответить'
+
+  activerecord:
+    models:
+      answer: 'Ответ'
+      question: 'Вопрос'

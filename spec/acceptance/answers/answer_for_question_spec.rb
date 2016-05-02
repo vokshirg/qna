@@ -17,7 +17,7 @@ feature 'Answer for question' do
     click_on I18n.t('common.answer')
 
     fill_in 'Body', with: 'My new answers body'
-    click_on 'Создать Answer'
+    click_on I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer'))
 
     expect(page).to have_content 'My new answers body'
     expect(current_path).to eq question_path(question)

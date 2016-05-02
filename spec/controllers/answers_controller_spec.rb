@@ -21,25 +21,26 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
     context "with valid attributes" do
       it "save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:answer), question_id: question.id }.to change(question.answers, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer), question_id: question.id, format: :js }.to change(question.answers, :count).by(1)
       end
 
-      it "redirect to show view" do
-        post :create, answer: attributes_for(:answer), question_id: question.id
-        expect(response).to redirect_to question_path(answer.question)
+      it "re-render show view" do
+        post :create, answer: attributes_for(:answer), question_id: question.id, format: :js
+        expect(response).to render_template :create
       end
     end
 
-    context "with invalid attributes" do
-      it "doesn't save the new answer in the database" do
-        expect { post :create, answer: attributes_for(:invalid_answer), question_id: question.id }.to_not change(Answer, :count)
-      end
-
-      it "re-render new view" do
-        post :create, answer: attributes_for(:invalid_answer), question_id: question.id
-        expect(response).to render_template :new
-      end
-    end
+    # context "with invalid attributes" do
+    #   it "doesn't save the new answer in the database" do
+    #     post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js
+    #     expect(page).have_content 'Body не может быть пустым'
+    #   end
+    #
+    #   it "re-render new view" do
+    #     post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js
+    #     expect(response).to render_template :new
+    #   end
+    # end
   end
 
   describe "GET #edit" do

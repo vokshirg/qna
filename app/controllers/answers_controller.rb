@@ -12,7 +12,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     if @answer.save
-      redirect_to @answer.question
+      respond_to do |format|
+        format.html { redirect_to @answer.question }
+        format.js { render :create }
+      end
     else
       render :new
     end
