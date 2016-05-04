@@ -1,23 +1,29 @@
 .question
-  h3 Заголовок
-  h4 = @question.title
-  h3 Вопрос
-  p = @question.body
 
-  hr
-  = form_for [@question, @answer], remote: true do |f|
-    = f.label :body, 'Your answer'
-    = f.text_field :body
-    = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer'))
-  
-  hr
-  = link_to questions_path, class: 'btn btn-default btn-sm'
-    | Назад
-  - if current_user
-    = link_to t('common.answer'), new_question_answer_path(@question), class: 'btn btn-success btn-sm'
-    - if current_user.is_author?(@question)
+  .pull-right
+    = link_to questions_path, class: 'btn btn-default btn-sm'
+      | Назад
+    - if current_user && current_user.is_author?(@question)
       = link_to t('common.edit'), edit_question_path, class: 'btn btn-warning btn-sm'
 
+  h3 Заголовок
+  h4 = @question.title
+
+  h3 Вопрос
+  p = @question.body
+  hr
+
+  - if current_user
+    = form_for [@question, @answer], remote: true, html: { class: "form-horizontal", role: "form" } do |f|
+      = render 'common/errors', resource: @answer
+
+      .form-group
+        = f.label :body, 'Your answer', class: "col-sm-2 control-label"
+        .col-sm-10
+          = f.text_area :body, class: "form-control", rows: 2
+          br
+          = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
+  
   h2 Ответы
   .answers
     = render @question.answers

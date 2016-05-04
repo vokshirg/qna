@@ -20,4 +20,9 @@ feature 'User Answer', %q{
       expect(page).to have_content 'My Answer'
     end
   end
+
+  scenario 'Non-authenticated user create answer', js: true do
+    visit question_path(question)
+    expect(page).to_not have_content 'Your answer'
+  end
 end

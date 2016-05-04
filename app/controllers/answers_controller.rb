@@ -17,7 +17,10 @@ class AnswersController < ApplicationController
         format.js { render :create }
       end
     else
-      render :new
+      respond_to do |format|
+        format.html { render :new }
+        format.js { render :new }
+      end
     end
   end
 
@@ -26,7 +29,10 @@ class AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
-      redirect_to @answer.question
+      respond_to do |format|
+        format.html { redirect_to @answer.question }
+        format.js { render :update }
+      end
     else
       render :edit
     end
@@ -34,7 +40,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    redirect_to @answer.question
+    # redirect_to @answer.question
   end
 
   private

@@ -1,2 +1,4 @@
-$(".answers").html('<%= j render @question.answers %>');
+var last_answer = '<%= j render @question.answers.first %>'
+$(".answers").prepend(last_answer);
 $("#answer_body").val('');
+$(".answers").find(".answer").find("form").hide();

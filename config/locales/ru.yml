@@ -4,6 +4,7 @@ ru:
     save: 'Сохранить'
     delete: 'Удалить'
     answer: 'Ответить'
+    confirm: 'Вы уверены?'
 
   activerecord:
     models:

@@ -30,17 +30,16 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    # context "with invalid attributes" do
-    #   it "doesn't save the new answer in the database" do
-    #     post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js
-    #     expect(page).have_content 'Body не может быть пустым'
-    #   end
-    #
-    #   it "re-render new view" do
-    #     post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js
-    #     expect(response).to render_template :new
-    #   end
-    # end
+    context "with invalid attributes" do
+      it "doesn't save the new answer in the database" do
+        expect { post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js }.to_not change(Answer, :count)
+      end
+
+      it "re-render new view" do
+        post :create, answer: attributes_for(:invalid_answer), question_id: question.id, format: :js
+        expect(response).to render_template :new
+      end
+    end
   end
 
   describe "GET #edit" do
@@ -122,20 +121,20 @@ RSpec.describe AnswersController, type: :controller do
     context "when user is owner of answer" do
       before { sign_in(answer.user) }
       it "delete answer" do
-        expect { delete :destroy, id: answer }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, id: answer, format: :js }.to change(question.answers, :count).by(-1)
       end
       it "redirect to index view" do
-        expect(delete :destroy, id: answer).to redirect_to question_path(answer.question)
+        expect(delete :destroy, id: answer, format: :js).to render_template :destroy
       end
     end
 
     context "when user is not owner of answer" do
       sign_in_user
       it "delete answer" do
-        expect { delete :destroy, id: answer }.to_not change(Answer, :count)
+        expect { delete :destroy, id: answer, format: :js }.to_not change(Answer, :count)
       end
       it "redirect to index view" do
-        expect(delete :destroy, id: answer).to redirect_to question_path(answer.question)
+        expect(delete :destroy, id: answer, format: :js).to redirect_to question_path(answer.question)
       end
     end
   end

@@ -1,12 +1,12 @@
 - unless answer.new_record?
-  hr
-  .container.answer
-    p = time_ago_in_words(answer.created_at)
-    p = answer.body
-    
-    - if current_user && current_user.is_author?(answer)
-      .form-group
-        = link_to t('common.delete'), answer, method: :delete, class: 'btn btn-danger btn-sm pull-right'
-        = link_to t('common.edit'), edit_answer_path(answer), class: 'btn btn-warning btn-sm pull-right'
-    
-  .clearfix
+  .answer id="answer_#{answer.id}"
+    hr
+    .container
+      p = time_ago_in_words(answer.created_at)
+      p.body = answer.body
+      
+      - if current_user && current_user.is_author?(answer)
+        = render 'answers/form', resource: answer
+        .form-group
+          = link_to t('common.delete'), answer, remote: true, method: :delete, data: { confirm: t("common.confirm") }, class: 'btn btn-danger btn-sm pull-right'
+          = link_to t('common.edit'), edit_answer_path(answer), remote: true, class: 'answer-edit btn btn-warning btn-sm pull-right'
