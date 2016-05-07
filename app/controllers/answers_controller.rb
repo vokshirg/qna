@@ -12,15 +12,9 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     if @answer.save
-      respond_to do |format|
-        format.html { redirect_to @answer.question }
-        format.js { render :create }
-      end
+      render :create
     else
-      respond_to do |format|
-        format.html { render :new }
-        format.js { render :new }
-      end
+      render :new
     end
   end
 
@@ -29,10 +23,7 @@ class AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
-      respond_to do |format|
-        format.html { redirect_to @answer.question }
-        format.js { render :update }
-      end
+      render :update
     else
       render :edit
     end
