@@ -32,10 +32,12 @@ feature 'Edit answer' do
         click_on I18n.t('common.edit')
         fill_in 'Body', with: 'repair misprint'
         click_on I18n.t('common.save')
+
+        expect(page).to_not have_content answer.body
+        expect(page).to have_content 'repair misprint'
+        expect(page).to_not have_selector 'textarea'
       end
 
-      expect(page).to have_content 'repair misprint'
-      expect(page).to_not have_content "Text of answer body"
       expect(current_path).to eq question_path(answer.question)
     end
   end

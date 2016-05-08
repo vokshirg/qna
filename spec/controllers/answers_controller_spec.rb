@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create :question }
-  let(:answer) { create :answer, question_id: question.id }
+  let(:answer) { create :answer, question: question }
 
   describe "GET #new" do
     before { sign_in(answer.user) }
@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, answer: attributes_for(:answer), question_id: question.id, format: :js }.to change(question.answers, :count).by(1)
       end
 
-      it "re-render show view" do
+      it "re-render create.js template" do
         post :create, answer: attributes_for(:answer), question_id: question.id, format: :js
         expect(response).to render_template :create
       end
