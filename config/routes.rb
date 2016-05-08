@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # get 'welcome/index'
   resources :questions do
     resources :answers, shallow: true
+    post :right_answer, on: :member
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

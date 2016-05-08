@@ -41,6 +41,10 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
+  def right_answer
+    @right_answer = params[:right_answer_id]
+  end
+
   private
 
   def is_author?
