@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'Show all questions, method index' do
   scenario 'any user can see all questions' do

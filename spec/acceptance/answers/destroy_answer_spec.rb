@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'Destroy answer' do
   given(:user) {create(:user)}
@@ -27,7 +27,7 @@ feature 'Destroy answer' do
 
     visit question_path(answer.question)
     click_on I18n.t('common.delete')
-    page.driver.browser.switch_to.alert.accept
+    page.driver.browser.accept_js_confirms
 
     expect(page).to_not have_content answer.body
     expect(current_path).to eq question_path(answer.question)

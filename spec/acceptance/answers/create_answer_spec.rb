@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'User Answer', %q{
   In order to echange my knowledge
@@ -18,6 +18,19 @@ feature 'User Answer', %q{
     expect(current_path).to eq question_path(question)
     within '.answers' do
       expect(page).to have_content 'My Answer'
+    end
+  end
+
+  scenario 'User tries create  invalid question', js: true do
+    sign_in user
+    visit question_path(question)
+
+    click_on I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer'))
+
+    expect(current_path).to eq question_path(question)
+
+    within '#new_answer' do
+      expect(page).to have_content 'Body не может быть пустым'
     end
   end
 

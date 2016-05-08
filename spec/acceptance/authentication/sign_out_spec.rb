@@ -1,4 +1,5 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
+
 feature 'User Sign Out' do
   given(:user) {create(:confirmed_user)}
   scenario 'Non-authenticated user tries sign out' do

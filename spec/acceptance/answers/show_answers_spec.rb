@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'Show all answers for questions, method index' do
   given(:question) { create :question_with_answers }

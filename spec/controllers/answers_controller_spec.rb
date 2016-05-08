@@ -69,6 +69,7 @@ RSpec.describe AnswersController, type: :controller do
   describe "PATCH #update" do
     context "when user is owner of answer" do
       before { sign_in(answer.user) }
+
       context "with valid attributes" do
         it 'assign the requested answer to @answer' do
           patch :update, id: answer, answer: attributes_for(:answer), format: :js
@@ -130,9 +131,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context "when user is not owner of answer" do
       sign_in_user
+
       it "delete answer" do
         expect { delete :destroy, id: answer, format: :js }.to_not change(Answer, :count)
       end
+
       it "redirect to index view" do
         expect(delete :destroy, id: answer, format: :js).to redirect_to question_path(answer.question)
       end
