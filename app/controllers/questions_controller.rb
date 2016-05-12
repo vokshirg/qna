@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show ]
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
-  before_action :is_author?, only: [:edit, :destroy]
+  before_action :set_question, only: [:show, :edit, :update, :destroy, :right_answer]
+  before_action :is_author?, only: [:edit, :destroy, :right_answer]
 
   def index
     @questions = Question.all
@@ -29,11 +29,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-      if @question.update(question_params)
-        redirect_to @question, notice: "Question was successfully updated"
-      else
-        render :edit
-      end
+    if @question.update(question_params)
+      redirect_to @question, notice: "Question was successfully updated"
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -42,14 +42,16 @@ class QuestionsController < ApplicationController
   end
 
   def right_answer
-    @right_answer = params[:right_answer_id]
+    @right_answer = Answer.find(params[:right_answer_id])
+    @question.right_answer = @right_answer
+    @question.save
   end
 
   private
 
   def is_author?
     unless current_user.is_author?(@question)
-      redirect_to questions_path, alert: 'You are not author of this question'
+      redirect_to :back, alert: 'You are not author of this question'
     end
   end
 

@@ -2,6 +2,7 @@
   .answer id="answer_#{answer.id}"
     hr
     .container
+      = link_to 'Right Answer', right_answer_question_path(right_answer_id: answer.id, id: @question.id), method: :post, remote: true
       p = time_ago_in_words(answer.created_at)
       p.body = answer.body
       

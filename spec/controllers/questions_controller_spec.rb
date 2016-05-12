@@ -163,10 +163,15 @@ RSpec.describe QuestionsController, type: :controller do
     context "author of question" do
       before { sign_in(question.user) }
       before { question }
+      before { answer }
 
-      it 'assign the requested question to @question' do
+      it 'assign the requested right_answer to @right_answer' do
         post :right_answer, id: question, right_answer_id: answer, format: :js
         expect(assigns(:right_answer)).to eq answer
+      end
+
+      it 'assign the right_answer to question' do
+        expect(question.right_answer).to eq answer
       end
     end
   end
