@@ -1,4 +1,4 @@
-require_relative '../acceptance_helper'
+require 'acceptance_helper'
 
 feature 'Edit answer' do
   given(:user) {create(:user)}
@@ -28,9 +28,9 @@ feature 'Edit answer' do
       sign_in(answer.user)
       visit question_path(answer.question)
 
-      within(".answer") do
+      within(".answers .answer") do
         click_on I18n.t('common.edit')
-        fill_in 'Body', with: 'repair misprint'
+        fill_in "Body", with: "repair misprint"
         click_on I18n.t('common.save')
 
         expect(page).to_not have_content answer.body

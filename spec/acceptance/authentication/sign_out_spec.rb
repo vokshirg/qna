@@ -1,4 +1,4 @@
-require_relative '../acceptance_helper'
+require 'acceptance_helper'
 
 feature 'User Sign Out' do
   given(:user) {create(:confirmed_user)}

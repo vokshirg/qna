@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: [:edit, :update, :destroy]
+  before_action :set_answer, only: [:edit, :update, :destroy, :right_answer, :not_right_answer]
   before_action :check_author?, only: [:edit, :update, :destroy]
   before_action :set_question, only: [:new, :create]
 
@@ -33,6 +33,33 @@ class AnswersController < ApplicationController
     @answer.destroy
     # redirect_to @answer.question
   end
+
+  def right_answer
+    if current_user.is_author?(@answer.question)
+      if @answer.question.right_answer
+        @answer.question.answers.where("right_answer = ?", true).each do |a|
+          a.right_answer = false
+          a.save
+        end
+      end
+      @answer.right_answer = true
+      @answer.save
+    else
+      redirect_to @answer.question, alert: 'You are not author of this answer'
+    end
+  end
+
+  def not_right_answer
+    if current_user.is_author?(@answer.question)
+      @answer.right_answer = false
+      @answer.save
+      render :right_answer
+    else
+      redirect_to @answer.question, alert: 'You are not author of this answer'
+    end
+  end
+
+
 
   private
 

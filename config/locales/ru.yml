@@ -5,8 +5,14 @@ ru:
     delete: 'Удалить'
     answer: 'Ответить'
     confirm: 'Вы уверены?'
+    ago: ' назад'
 
   activerecord:
     models:
       answer: 'Ответ'
       question: 'Вопрос'
+
+  answers:
+    answer:
+      right_answer: 'Верный ответ'
+      not_right_answer: 'Не верный ответ'

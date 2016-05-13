@@ -1,0 +1,19 @@
+$(".answers").html("<%= j render @answer.question.answers %>")
+$(".answers").find(".answer").find(".form-edit").hide();
+
+
+// TODO придумать как устранить дублирование из answers.coffee
+onEditClick = function() {
+  $(".answer-edit.btn-primary").not(this).click();
+  var answer = $(this).closest(".answer");
+  answer.find(".form-edit").toggle();
+  answer.find(".body").toggle();
+  if ($(this).hasClass("btn-warning")) {
+    $(this).removeClass("btn-warning").addClass("btn-primary");
+    $(this).html('Отмена');
+  } else {
+    $(this).removeClass("btn-primary").addClass("btn-warning");
+    $(this).html('Редактировать');
+  }
+}
+$(".answer-edit").on("click", onEditClick);

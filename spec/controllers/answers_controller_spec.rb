@@ -141,4 +141,75 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe "PATCH #right_answer" do
+    before { answer }
+
+    context "author of question" do
+      before { sign_in(answer.question.user) }
+      before { patch :right_answer, id: answer, format: :js }
+
+      it 'assign the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'assign the right_answer to question' do
+        expect(assigns(:answer).question.right_answer).to eq answer
+      end
+
+      it 'just one right answer' do
+        expect(assigns(:answer).question.answers.where("right_answer = ?", true).count).to eq 1
+      end
+
+      it 'set right answer flag to true' do
+        expect(assigns(:answer).right_answer).to eq true
+      end
+
+      it "render right_answer.js template" do
+        expect( patch :right_answer, id: answer, format: :js ).to render_template :right_answer
+      end
+    end
+
+    context "not author of question" do
+      sign_in_user
+
+      it "redirect to question" do
+        expect( patch :right_answer, id: answer, format: :js ).to redirect_to question_path(answer.question)
+      end
+    end
+  end
+
+
+  describe "PATCH #not_right_answer" do
+    before { answer }
+
+    context "author of question" do
+      before { sign_in(answer.question.user) }
+      before { patch :not_right_answer, id: answer, format: :js }
+
+      it 'assign the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'no one right answer' do
+        expect(assigns(:answer).question.answers.where("right_answer = ?", true).count).to eq 0
+      end
+
+      it 'set right answer flag to false' do
+        expect(assigns(:answer).right_answer).to eq false
+      end
+
+      it "render right_answer.js template" do
+        expect(response).to render_template :right_answer
+      end
+    end
+    
+    context "not author of question" do
+      sign_in_user
+
+      it "redirect to question" do
+        expect( patch :not_right_answer, id: answer, format: :js ).to redirect_to question_path(answer.question)
+      end
+    end
+  end
 end
