@@ -65,7 +65,7 @@ RSpec.describe QuestionsController, type: :controller do
       before { get :edit, id: question }
 
       it "renders edit view" do
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to question_path(question)
       end
     end
 
@@ -152,26 +152,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
       it "redirect to index view" do
-        expect(delete :destroy, id: question).to redirect_to questions_path
-      end
-    end
-  end
-
-  describe "POST #right_answer" do
-    let(:answer) { create :answer, question: question }
-
-    context "author of question" do
-      before { sign_in(question.user) }
-      before { question }
-      before { answer }
-
-      it 'assign the requested right_answer to @right_answer' do
-        post :right_answer, id: question, right_answer_id: answer, format: :js
-        expect(assigns(:right_answer)).to eq answer
-      end
-
-      it 'assign the right_answer to question' do
-        expect(question.right_answer).to eq answer
+        expect(delete :destroy, id: question).to redirect_to question_path(question)
       end
     end
   end
