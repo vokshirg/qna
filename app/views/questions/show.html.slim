@@ -24,8 +24,6 @@
           br
           = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
   
-  h2 Лучший
-  = render @question.right_answer if @question.right_answer
   h2 Ответы
   .answers
     = render @question.answers
