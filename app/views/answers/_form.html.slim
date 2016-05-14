@@ -1,4 +1,4 @@
-= form_for( resource.new_record? ? [@question, resource] : resource, html: { class: "form-horizontal form-edit", role: "form" }, remote: (true if controller.controller_name == "questions") ) do |f|
+= form_for( resource.new_record? ? [@question, resource] : resource, html: { class: "form-horizontal form-edit", role: "form" }, remote: true ) do |f|
   = render 'common/errors', resource: resource
   .col-xs-12
     .form-group

@@ -11,11 +11,11 @@
               = link_to right_answer_answer_path(answer), method: :patch, remote: true, class: 'right_answer_link btn btn-default btn-xs pull-left'
                 i.fa.fa-check
         td
+          p.date
+            = time_ago_in_words(answer.created_at)
+            = t("common.ago")
+        
           .body 
-            p.date
-              = time_ago_in_words(answer.created_at)
-              = t("common.ago")
-          
             = answer.body
             
           - if current_user && current_user.is_author?(answer)
@@ -23,4 +23,5 @@
             .form-group
               = link_to t('common.delete'), answer, remote: true, method: :delete, data: { confirm: t("common.confirm") }, class: 'btn btn-danger btn-sm pull-right'
               = link_to t('common.edit'), edit_answer_path(answer), remote: true, class: 'answer-edit btn btn-warning btn-sm pull-right'
+              = link_to t('common.cancel'), edit_answer_path(answer), remote: true, class: 'answer-cancel btn btn-primary btn-sm pull-right'
               

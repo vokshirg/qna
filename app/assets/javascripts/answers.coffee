@@ -3,29 +3,25 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 onEditClick = ->
-  $(".answer-edit.btn-primary").not(@).click()
   answer = $(@).closest(".answer")
-  answer.find(".form-edit").toggle()
-  answer.find(".body").toggle()
-  if $(@).hasClass("btn-warning")
-    $(@).removeClass("btn-warning").addClass("btn-primary")
-    $(@).html('Отмена')
-  else
-    $(@).removeClass("btn-primary").addClass("btn-warning")
-    $(@).html('Редактировать')
+  $(".answer").not(answer).find(".answer-cancel").click()
+  $(@).hide()
+  answer.find(".answer-cancel").show()
+  answer.find(".form-edit").show()
+  answer.find(".body").hide()
 
-onUpdate = ->
-  $(".answer-edit").on "click", onEditClick
+onCancelClick = ->
+  answer = $(@).closest(".answer")
+  $(@).hide()
+  answer.find(".answer-edit").show()
+  answer.find(".form-edit").hide()
+  answer.find(".body").show()
 
 ready = ->
-  $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
-    # alert "The answer was deleted."
-
-  $(".answer .form-edit").hide()
+  # $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
   $(".answer-edit").on "click", onEditClick
+  $(".answer-cancel").on "click", onCancelClick
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
-# $(document).on('page:partial-load', onUpdate)
-# $(document).on('page:update', onUpdate)
-# $(document).on('page:change', onUpdate)
+$(document).on('page:update', ready)
