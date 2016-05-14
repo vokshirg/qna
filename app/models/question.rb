@@ -5,6 +5,6 @@ class Question < ActiveRecord::Base
   validates :body, :title, :user_id,  presence: true
 
   def right_answer
-    self.answers.where("right_answer = ? ", true).first || false
+    self.answers.where("right_answer = ? ", true).first
   end
 end

@@ -27,7 +27,7 @@ RSpec.describe Answer, type: :model do
         it "answer's question havn't right answers" do
           # expect(answers.first.question.right_answer).to eq(answers.last)
           answers.first.reset_right_answers
-          expect(answers.first.question.right_answer).to eq(false)
+          expect(answers.first.question.right_answer).to eq(nil)
         end
 
       end
