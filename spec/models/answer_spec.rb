@@ -15,21 +15,39 @@ RSpec.describe Answer, type: :model do
   end
 
   describe "public instance methods" do
-    let(:question) { create :question }
-    let!(:answers) { create_list :answer_sequence, 3, right_answer: true, question: question }
+    let(:question_ra) { create :question_with_right_answers }
+    let(:ra) { create :answer, right_answer: true }
 
     context "responds to its methods" do
-      it { expect(answers.first).to respond_to(:reset_right_answers) }
+      it { expect(ra).to respond_to(:is_right_answer) }
+      it { expect(ra).to respond_to(:not_right_answer) }
     end
 
     context "executes methods correctly" do
-      context "#reset_right_answers" do
-        it "answer's question havn't right answers" do
-          # expect(answers.first.question.right_answer).to eq(answers.last)
-          answers.first.reset_right_answers
-          expect(answers.first.question.right_answer).to eq(nil)
-        end
+      context "#is_right_answer" do
+        before {
+          @qra = question_ra
+          @qra.answers.first.is_right_answer
+          @qra.answers.reload
+          @qra.reload
+          # raise @qra.answers.first.inspect
+        }
+        it { expect(question_ra.answers.first.right_answer).to eq true }
+        it { expect(question_ra.answers.last.right_answer).to eq false }
 
+        it "right answer of answer's question_ra is equal answer " do
+          # raise question_ra.inspect
+          expect(question_ra.right_answer).to eq(question_ra.answers.first)
+        end
+      end
+
+      context "#not_right_answer" do
+        before { ra.not_right_answer }
+        it { expect(ra.right_answer).to eq false }
+
+        it "answer's question havn't right answers" do
+          expect(ra.question.right_answer).to eq(nil)
+        end
       end
     end
   end

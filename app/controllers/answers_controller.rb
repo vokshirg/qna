@@ -35,8 +35,7 @@ class AnswersController < ApplicationController
 
   def right_answer
     if current_user.is_author?(@answer.question)
-      @answer.reset_right_answers
-      @answer.update(right_answer: true)
+      @answer.is_right_answer
     else
       redirect_to @answer.question, alert: 'You are not author of this answer'
     end
@@ -44,7 +43,7 @@ class AnswersController < ApplicationController
 
   def not_right_answer
     if current_user.is_author?(@answer.question)
-      @answer.update(right_answer: false)
+      @answer.not_right_answer
       render :right_answer
     else
       redirect_to @answer.question, alert: 'You are not author of this answer'
