@@ -11,22 +11,14 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      render :create
-    else
-      render :new
-    end
+    render :new unless @answer.save
   end
 
   def edit
   end
 
   def update
-    if @answer.update(answer_params)
-      render :update
-    else
-      render :edit
-    end
+    render :edit unless @answer.update(answer_params)
   end
 
   def destroy
@@ -34,20 +26,19 @@ class AnswersController < ApplicationController
   end
 
   def right_answer
-    if current_user.is_author?(@answer.question)
-      @answer.is_right_answer
-    else
-      redirect_to @answer.question, alert: 'You are not author of this answer'
+    unless @answer.is_right_answer(current_user)
+      render :status => 403
     end
+    # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
 
   def not_right_answer
-    if current_user.is_author?(@answer.question)
-      @answer.not_right_answer
+    if @answer.not_right_answer(current_user)
       render :right_answer
     else
-      redirect_to @answer.question, alert: 'You are not author of this answer'
+      render nothing: true, :status => 403
     end
+    # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
 
 

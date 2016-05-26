@@ -27,22 +27,20 @@ RSpec.describe Answer, type: :model do
       context "#is_right_answer" do
         before {
           @qra = question_ra
-          @qra.answers.first.is_right_answer
+          @qra.answers.first.is_right_answer(@qra.user)
           @qra.answers.reload
           @qra.reload
-          # raise @qra.answers.first.inspect
         }
         it { expect(question_ra.answers.first.right_answer).to eq true }
         it { expect(question_ra.answers.last.right_answer).to eq false }
 
         it "right answer of answer's question_ra is equal answer " do
-          # raise question_ra.inspect
           expect(question_ra.right_answer).to eq(question_ra.answers.first)
         end
       end
 
       context "#not_right_answer" do
-        before { ra.not_right_answer }
+        before { ra.not_right_answer(ra.question.user) }
         it { expect(ra.right_answer).to eq false }
 
         it "answer's question havn't right answers" do

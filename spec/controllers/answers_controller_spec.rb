@@ -172,9 +172,10 @@ RSpec.describe AnswersController, type: :controller do
 
     context "not author of question" do
       sign_in_user
+      before { patch :not_right_answer, id: answer, format: :js }
 
-      it "redirect to question" do
-        expect( patch :right_answer, id: answer, format: :js ).to redirect_to question_path(answer.question)
+      it "render 403" do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -203,12 +204,13 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :right_answer
       end
     end
-    
+
     context "not author of question" do
       sign_in_user
+      before { patch :not_right_answer, id: answer, format: :js }
 
-      it "redirect to question" do
-        expect( patch :not_right_answer, id: answer, format: :js ).to redirect_to question_path(answer.question)
+      it "render 403" do
+        expect(response.status).to eq(403)
       end
     end
   end
