@@ -27,7 +27,7 @@ class AnswersController < ApplicationController
 
   def right_answer
     unless @answer.is_right_answer(current_user)
-      render :status => 403
+      render status: 403
     end
     # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
     if @answer.not_right_answer(current_user)
       render :right_answer
     else
-      render nothing: true, :status => 403
+      render nothing: true, status: 403
     end
     # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
