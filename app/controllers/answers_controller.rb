@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: [:edit, :update, :destroy]
+  before_action :set_answer, only: [:edit, :update, :destroy, :right_answer, :not_right_answer]
   before_action :check_author?, only: [:edit, :update, :destroy]
   before_action :set_question, only: [:new, :create]
 
@@ -11,28 +11,37 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to @answer.question
-    else
-      render :new
-    end
+    render :new unless @answer.save
   end
 
   def edit
   end
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @answer.question
-    else
-      render :edit
-    end
+    render :edit unless @answer.update(answer_params)
   end
 
   def destroy
     @answer.destroy
-    redirect_to @answer.question
   end
+
+  def right_answer
+    unless @answer.is_right_answer(current_user)
+      render status: 403
+    end
+    # redirect_to @answer.question, alert: 'You are not author of this answer'
+  end
+
+  def not_right_answer
+    if @answer.not_right_answer(current_user)
+      render :right_answer
+    else
+      render nothing: true, status: 403
+    end
+    # redirect_to @answer.question, alert: 'You are not author of this answer'
+  end
+
+
 
   private
 

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Destroy question' do
   given(:user) {create(:user)}

@@ -14,6 +14,12 @@ FactoryGirl.define do
       end
     end
 
+    factory :question_with_right_answers, class: 'Question' do
+      after(:create) do |question|
+        create_list(:answer_sequence, 3, question: question, right_answer: true)
+      end
+    end
+
     factory :question_sequence, class: 'Question' do
       title
     end

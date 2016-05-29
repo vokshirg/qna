@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Destroy answer' do
   given(:user) {create(:user)}
@@ -22,11 +22,12 @@ feature 'Destroy answer' do
     expect(current_path).to eq question_path(answer.question)
   end
 
-  scenario 'Authenticated user tries delete own answer' do
+  scenario 'Authenticated user tries delete own answer', js: true do
     sign_in(answer.user)
 
     visit question_path(answer.question)
     click_on I18n.t('common.delete')
+    page.driver.browser.accept_js_confirms
 
     expect(page).to_not have_content answer.body
     expect(current_path).to eq question_path(answer.question)

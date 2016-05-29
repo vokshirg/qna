@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = @question.answers.build
   end
 
   def new
@@ -28,11 +29,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-      if @question.update(question_params)
-        redirect_to @question, notice: "Question was successfully updated"
-      else
-        render :edit
-      end
+    if @question.update(question_params)
+      redirect_to @question, notice: "Question was successfully updated"
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -44,7 +45,7 @@ class QuestionsController < ApplicationController
 
   def is_author?
     unless current_user.is_author?(@question)
-      redirect_to questions_path, alert: 'You are not author of this question'
+      redirect_to @question, alert: 'You are not author of this question'
     end
   end
 

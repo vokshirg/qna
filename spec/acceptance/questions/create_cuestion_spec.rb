@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Create question', %q{
   In order to get anser from community
@@ -15,7 +15,7 @@ feature 'Create question', %q{
     click_on 'Задать вопрос'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Test text'
-    click_on 'Создать Question'
+    click_on I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.question'))
 
     expect(page).to have_content 'Test question'
     expect(page).to have_content 'Test text'

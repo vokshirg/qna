@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User Sign Up' do
   given(:user) {create(:confirmed_user)}

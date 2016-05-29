@@ -1,0 +1,4 @@
+var last_answer = '<%= j render @answer %>'
+$(".answers").prepend(last_answer);
+$("#answer_body").val('');
+$(".answers").find(".answer").find("form").hide();
