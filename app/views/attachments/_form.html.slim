@@ -1,0 +1,12 @@
+.form-group
+  = f.label :file, class: "col-sm-2 control-label"
+  .col-sm-10
+    .row
+    
+      = f.fields_for :attachments do |a|
+        = render 'attachments/attachment_fields', f: a
+      .links.col-md-1
+        = link_to_add_association  f, :attachments, partial: 'attachments/attachment_fields', class: 'btn btn-success btn-sm pull-right' do
+          = icon 'plus'
+        
+        

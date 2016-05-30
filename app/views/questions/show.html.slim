@@ -12,6 +12,10 @@
   h3 Вопрос
   p = @question.body
   hr
+  .attachments
+    - if @question.attachments.present?
+        = render 'attachments/attachments', object: @question
+  hr
 
   - if current_user
     = form_for [@question, @answer], remote: true, html: { class: "form-horizontal", role: "form" } do |f|
@@ -21,8 +25,12 @@
         = f.label :body, 'Your answer', class: "col-sm-2 control-label"
         .col-sm-10
           = f.text_area :body, class: "form-control", rows: 2
-          br
-          = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
+      
+      = render 'attachments/form', f: f
+
+      br
+      = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
+ 
   
   h2 Ответы
   .answers

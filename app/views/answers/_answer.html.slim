@@ -17,11 +17,14 @@
         
           .body 
             = answer.body
+          .attachments
+            - if answer.attachments.present?
+                = render 'attachments/attachments', object: answer
             
           - if current_user && current_user.is_author?(answer)
             = render 'answers/form', resource: answer
             .form-group
               = link_to t('common.delete'), answer, remote: true, method: :delete, data: { confirm: t("common.confirm") }, class: 'btn btn-danger btn-sm pull-right'
-              = link_to t('common.edit'), edit_answer_path(answer), remote: true, class: 'answer-edit btn btn-warning btn-sm pull-right'
-              = link_to t('common.cancel'), edit_answer_path(answer), remote: true, class: 'answer-cancel btn btn-primary btn-sm pull-right'
+              = link_to t('common.edit'), "#", class: 'answer-edit btn btn-warning btn-sm pull-right'
+              = link_to t('common.cancel'), "#", class: 'answer-cancel btn btn-primary btn-sm pull-right'
               

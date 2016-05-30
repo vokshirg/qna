@@ -27,6 +27,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
+    it "assigns a new Attachment for answer to @attachment" do
+      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
+    end
+
     it 'render show view' do
       expect(response).to render_template :show
     end
@@ -38,6 +42,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it "assigns a new Question to @question" do
       expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it "assigns a new Attachment to @attachment" do
+      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it "renders new view" do
