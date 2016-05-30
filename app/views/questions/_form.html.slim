@@ -11,12 +11,7 @@
     .col-sm-10
       = f.text_area :body, class: "form-control", rows: 10
       
-  .form-group
-    = f.fields_for :attachments do |a|
-      = a.label :file, class: "col-sm-2 control-label"
-      .col-sm-10
-        = a.file_field :file, class: "form-control"
-
+  = render 'attachments/form', f: f
   .form-group
     .col-sm-offset-2.col-sm-10
       = f.submit class: "btn btn-primary"

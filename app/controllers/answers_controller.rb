@@ -15,6 +15,7 @@ class AnswersController < ApplicationController
   end
 
   def edit
+    @answer.attachments.build
   end
 
   def update
@@ -29,7 +30,6 @@ class AnswersController < ApplicationController
     unless @answer.is_right_answer(current_user)
       render status: 403
     end
-    # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
 
   def not_right_answer
@@ -38,7 +38,6 @@ class AnswersController < ApplicationController
     else
       render nothing: true, status: 403
     end
-    # redirect_to @answer.question, alert: 'You are not author of this answer'
   end
 
 
@@ -52,7 +51,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, attachments_attributes: [:file])
+    params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
   end
 
   def set_answer

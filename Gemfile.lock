@@ -70,6 +70,7 @@ GEM
       json (>= 1.7)
       mime-types (>= 1.16)
       mimemagic (>= 0.3.0)
+    cocoon (1.2.9)
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -99,8 +100,8 @@ GEM
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     ffi (1.9.10)
-    font-awesome-rails (4.6.2.0)
-      railties (>= 3.2, < 5.1)
+    font-awesome-sass (4.6.2)
+      sass (>= 3.2)
     formatador (0.2.5)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -300,12 +301,13 @@ DEPENDENCIES
   capybara
   capybara-webkit
   carrierwave
+  cocoon
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
   devise-bootstrap-views
   factory_girl_rails
-  font-awesome-rails
+  font-awesome-sass
   guard
   guard-rspec
   guard-zeus

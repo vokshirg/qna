@@ -1,3 +1,5 @@
 var a = $("#answer_<%= @answer.id %>");
 a.find(".body").html(a.find("#answer_body").val());
 a.find(".answer-cancel").click();
+files = "<%= j render 'attachments/attachments', object: @answer %>";
+a.find(".attachments").html(files);

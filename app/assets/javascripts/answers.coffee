@@ -2,7 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-onEditClick = ->
+onEditClick = (e)->
+  e.preventDefault()
   answer = $(@).closest(".answer")
   $(".answer").not(answer).find(".answer-cancel").click()
   $(@).hide()
@@ -10,7 +11,8 @@ onEditClick = ->
   answer.find(".form-edit").show()
   answer.find(".body").hide()
 
-onCancelClick = ->
+onCancelClick = (e)->
+  e.preventDefault()
   answer = $(@).closest(".answer")
   $(@).hide()
   answer.find(".answer-edit").show()
