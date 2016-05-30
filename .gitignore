@@ -11,6 +11,8 @@
 /tmp/
 /log/
 
+/public/uploads
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history

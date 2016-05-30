@@ -75,3 +75,6 @@ gem 'bootstrap-generators'
 gem 'devise'
 gem 'devise-bootstrap-views'
 gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'rails-4-x' # For 4.x
+
+gem 'carrierwave'
+gem 'remotipart'

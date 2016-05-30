@@ -12,6 +12,11 @@
   h3 Вопрос
   p = @question.body
   hr
+  h3 Прикрепленные файлы
+  ul
+    - @question.attachments.each do |a|
+      li = link_to a.file.identifier, a.file.url
+  hr
 
   - if current_user
     = form_for [@question, @answer], remote: true, html: { class: "form-horizontal", role: "form" } do |f|
@@ -21,8 +26,15 @@
         = f.label :body, 'Your answer', class: "col-sm-2 control-label"
         .col-sm-10
           = f.text_area :body, class: "form-control", rows: 2
-          br
-          = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
+      .form-group
+        = f.fields_for :attachments do |a|
+          = a.label :file, class: "col-sm-2 control-label"
+          .col-sm-10
+            = a.file_field :file, class: "form-control"
+
+      br
+      = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'
+ 
   
   h2 Ответы
   .answers
