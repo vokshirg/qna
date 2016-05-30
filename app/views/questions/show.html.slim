@@ -25,11 +25,8 @@
         = f.label :body, 'Your answer', class: "col-sm-2 control-label"
         .col-sm-10
           = f.text_area :body, class: "form-control", rows: 2
-      .form-group
-        = f.fields_for :attachments do |a|
-          = a.label :file, class: "col-sm-2 control-label"
-          .col-sm-10
-            = a.file_field :file, class: "form-control"
+      
+      = render 'attachments/form', f: f
 
       br
       = f.submit I18n.t("helpers.submit.create", model: I18n.t('activerecord.models.answer')), class: 'btn btn-success pull-right'

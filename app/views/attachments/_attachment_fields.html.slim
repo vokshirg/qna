@@ -1,11 +1,12 @@
-.nested-fields.row
+.nested-fields
   .col-md-11
     - if f.object.file.present?
-      = f.object.file.try(:identifier)
+      p = f.object.file.try(:identifier)
     - else
       = f.file_field :file, placeholder: true, class: "form-control"
     
-  .col-md-1
-    = link_to_remove_association f, class: 'btn btn-danger btn-sm pull-right' do
-      = icon 'trash'
+  - if f.object.id.present?
+    .col-md-1
+      = link_to_remove_association f, class: 'btn btn-danger btn-sm pull-right' do
+        = icon 'trash'
     
